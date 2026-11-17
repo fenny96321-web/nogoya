@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>日本中部樂高旅指南</title>
+    
+    <!-- Google Fonts：Fredoka 提供積木圓潤感，Noto Sans TC 提供中文字體 -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 圖示 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Fredoka', 'Noto Sans TC', 'sans-serif'],
+                    },
+                    colors: {
+                        lego: {
+                            red: '#E3000B',
+                            blue: '#0055BF',
+                            yellow: '#F6D305',
+                            green: '#237841',
+                            black: '#000000',
+                            white: '#FFFFFF',
+                            gray: '#E2E8F0'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 樂高風格核心樣式 */
+        body { 
+            background-color: #f0f0f0; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+        .lego-box {
+            background-color: white;
+            border: 3px solid black;
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px 0px black;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        .lego-btn {
+            border: 3px solid black;
+            border-radius: 8px;
+            box-shadow: 3px 3px 0px 0px black;
+            transition: all 0.1s ease;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .lego-btn:active {
+            transform: translate(3px, 3px);
+            box-shadow: 0px 0px 0px 0px black;
+        }
+        .lego-input {
+            border: 3px solid black;
+            border-radius: 8px;
+            padding: 10px;
+            width: 100%;
+            outline: none;
+            font-weight: bold;
+        }
+        .lego-input:focus { 
+            box-shadow: inset 3px 3px 0px 0px rgba(0,0,0,0.1); 
+        }
+        .tab-content { 
+            display: none; 
+            padding-bottom: 90px; 
+            animation: fadeIn 0.3s ease;
+        }
+        .tab-content.active { 
+            display: block; 
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .nav-item {
+            color: #64748b;
+            transition: all 0.2s;
+        }
+        .nav-item.active { 
+            color: #E3000B; 
+            text-shadow: 1px 1px 0px black; 
+            transform: translateY(-4px) scale(1.1); 
+        }
+        /* 隱藏捲軸 */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+        
+        .timeline-line {
+            width: 4px;
+            background-color: black;
+            position: absolute;
+            left: 14px;
+            top: 24px;
+            bottom: -16px;
+            z-index: 0;
+        }
+        .guide-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-bottom: 3px solid black;
+        }
+    </style>
+</head>
+<body class="text-gray-900 h-screen overflow-hidden flex flex-col max-w-md mx-auto relative bg-[#e5e5f7]" style="background-image: radial-gradient(#000000 1.5px, transparent 1.5px); background-size: 20px 20px;">
+
+    <!-- 頂部 Header -->
+    <header class="bg-lego-yellow border-b-4 border-black p-4 z-10 flex justify-between items-center shrink-0 shadow-[0_4px_0_0_rgba(0,0,0,1)]">
+        <h1 class="text-2xl font-black tracking-wider text-black">
+            <i class="fa-solid fa-puzzle-piece text-lego-red mr-1"></i> 中部之旅
+        </h1>
+        <div class="text-sm font-bold bg-white px-2 py-1 border-3 border-black rounded-lg shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
+            12/9 - 12/16
+        </div>
+    </header>
+
+    <!-- 主要內容區 -->
+    <main class="flex-1 overflow-y-auto p-4 relative" id="main-content">
+        
+        <!-- ================= 1. PLAN (行程表) ================= -->
+        <section id="tab-plan" class="tab-content active">
+            
+            <div class="lego-box bg-lego-blue text-white p-0">
+                <div class="bg-black text-white px-4 py-2 font-bold flex items-center">
+                    <i class="fa-solid fa-plane mr-2 text-lego-yellow"></i> 航班資訊
+                </div>
+                <div class="p-3">
+                    <div class="flex justify-between items-center mb-2 border-b-2 border-white/30 pb-2">
+                        <span class="font-bold">去程 IT268</span>
+                        <span class="text-sm">高雄 14:50 ➔ 名古屋 18:50</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold">回程 IT269</span>
+                        <span class="text-sm">名古屋 19:40 ➔ 高雄 22:35</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="itinerary-container" class="mt-6 relative">
+                <!-- JS 動態生成每日行程 -->
+            </div>
+        </section>
+
+        <!-- ================= 2. GUIDE (深度導覽) ================= -->
+        <section id="tab-guide" class="tab-content">
+            <h2 class="text-2xl font-black mb-4 flex items-center">
+                <i class="fa-solid fa-book-open text-lego-blue mr-2"></i> 景點深度導覽
+            </h2>
+            <div id="guide-container" class="space-y-5">
+                <!-- JS 動態生成導覽內容 -->
+            </div>
+        </section>
+
+        <!-- ================= 3. WALLET (記帳與匯率) ================= -->
+        <section id="tab-wallet" class="tab-content">
+            <h2 class="text-2xl font-black mb-4 flex items-center">
+                <i class="fa-solid fa-wallet text-lego-green mr-2"></i> 記帳與匯率
+            </h2>
+            
+            <div class="lego-box bg-lego-green text-white p-0">
+                <div class="bg-black text-white px-4 py-2 font-bold"><i class="fa-solid fa-calculator text-lego-yellow"></i> 匯率計算機</div>
+                <div class="p-4">
+                    <div class="flex gap-2 mb-3 items-center">
+                        <label class="text-sm font-bold w-20">匯率設定</label>
+                        <input type="number" id="exchange-rate" value="0.215" step="0.001" class="lego-input text-black py-1 px-2 text-sm flex-1">
+                    </div>
+                    
+                    <label class="block text-sm font-bold mb-1">輸入日幣算式 (例: 500+200*3)</label>
+                    <div class="flex gap-2 mb-3">
+                        <input type="text" id="calc-input" placeholder="支援加減乘除" class="lego-input text-black font-mono">
+                        <button onclick="calculateTotal()" class="lego-btn bg-lego-yellow text-black px-4"><i class="fa-solid fa-equals"></i></button>
+                    </div>
+                    <div class="bg-white text-black p-3 rounded-lg border-3 border-black font-bold text-center">
+                        <div class="text-sm text-gray-500 mb-1">總額換算</div>
+                        <div class="text-xl">¥ <span id="calc-result-jpy" class="text-lego-red font-black">0</span></div>
+                        <div class="text-sm">約 NT$ <span id="calc-result-twd" class="text-lego-blue">0</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lego-box bg-white p-0 mt-4">
+                <div class="bg-lego-yellow text-black px-4 py-2 font-bold border-b-3 border-black"><i class="fa-solid fa-pen text-lego-red"></i> 新增消費</div>
+                <div class="p-4">
+                    <input type="text" id="expense-name" placeholder="購買品項 (如：扭蛋、午餐)" class="lego-input mb-3 bg-gray-50">
+                    <input type="number" id="expense-amount" placeholder="日幣金額 (¥)" class="lego-input mb-3 bg-gray-50">
+                    
+                    <div class="flex items-center gap-2 mb-4">
+                        <label class="lego-btn bg-gray-200 text-black px-3 py-2 flex-1 text-sm cursor-pointer border-3 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
+                            <i class="fa-solid fa-camera mr-2"></i> 拍收據/戰利品
+                            <input type="file" id="expense-photo" accept="image/*" capture="environment" class="hidden" onchange="handlePhotoSelect(event)">
+                        </label>
+                        <div id="photo-preview-container" class="hidden h-12 w-12 border-3 border-black rounded-lg overflow-hidden shrink-0 shadow-[2px_2px_0_0_rgba(0,0,0,1)] bg-gray-100">
+                            <img id="photo-preview" src="" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <button onclick="addExpense()" class="lego-btn bg-lego-blue text-white w-full py-3 text-lg border-3 border-black">儲存紀錄</button>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <div class="flex justify-between items-end mb-3">
+                    <h3 class="font-black text-lg">消費紀錄列表</h3>
+                    <span id="total-twd-display" class="bg-lego-red text-white px-2 py-1 rounded text-sm font-bold border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]">總計 NT$ 0</span>
+                </div>
+                <div id="expense-list" class="space-y-3">
+                    <!-- JS 生成記帳清單 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 4. LISTS (清單) ================= -->
+        <section id="tab-lists" class="tab-content">
+            <h2 class="text-2xl font-black mb-4 flex items-center">
+                <i class="fa-solid fa-list-check text-lego-yellow mr-2"></i> 行前與備忘
+            </h2>
+            
+            <div class="lego-box bg-white p-0">
+                <div class="bg-black text-white px-4 py-2 font-bold"><i class="fa-solid fa-suitcase"></i> 行前必備 CheckList</div>
+                <div id="checklist-container" class="p-4 space-y-2">
+                    <!-- JS 生成 Checkbox -->
+                </div>
+            </div>
+
+            <div class="lego-box bg-white p-0 mt-4 flex flex-col h-[350px]">
+                <div class="bg-lego-red text-white px-4 py-2 font-bold border-b-3 border-black flex justify-between items-center">
+                    <span><i class="fa-solid fa-note-sticky text-lego-yellow"></i> 個人備忘錄</span>
+                    <span class="text-[10px] bg-black text-white px-1 rounded">自動存檔</span>
+                </div>
+                <div class="p-3 flex-1 flex flex-col">
+                    <textarea id="memo-input" class="lego-input flex-1 text-sm resize-none bg-yellow-50" placeholder="輸入您的筆記或是貼上網址... (例如：Ziv 的小汽車玩具記得帶)" oninput="saveMemo()"></textarea>
+                    <div id="memo-links" class="flex flex-col gap-2 mt-3 empty:hidden">
+                        <!-- JS 解析網址生成按鈕 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 5. INFO (資訊) ================= -->
+        <section id="tab-info" class="tab-content">
+            <h2 class="text-2xl font-black mb-4 flex items-center">
+                <i class="fa-solid fa-circle-info text-lego-blue mr-2"></i> 實用資訊
+            </h2>
+            
+            <!-- 更新後的住宿總覽 -->
+            <div class="lego-box bg-white p-0">
+                <div class="bg-black text-white px-4 py-2 font-bold"><i class="fa-solid fa-bed text-lego-blue"></i> 住宿總覽</div>
+                <div class="p-4 text-sm space-y-4">
+                    <div>
+                        <span class="bg-lego-red text-white px-2 py-0.5 rounded font-bold mr-1 border-2 border-black">DAY 1</span>
+                        <span class="text-xs font-bold text-gray-500">12/9 - 12/10</span>
+                        <strong class="text-base block mt-1">BASE LAYER HOTEL NAGOYA NISHIKI</strong>
+                        <p class="text-gray-600 text-xs mt-1">〒460-0003 Aichi, Nagoya, Naka Ward, Nishiki, 2 Chome−6−30 (1F)</p>
+                        <p class="text-gray-600 text-xs">📞 +81 52-265-7295</p>
+                        <p class="text-xs bg-gray-100 p-1.5 mt-1.5 rounded border border-gray-300 font-bold leading-relaxed">
+                            媽媽、方晴：特大床房(含早餐) × 2<br>
+                            姊姊：大床房(含早) × 1
+                        </p>
+                    </div>
+                    <div class="border-t-2 border-dashed border-gray-300 pt-3">
+                        <span class="bg-lego-blue text-white px-2 py-0.5 rounded font-bold mr-1 border-2 border-black">DAY 2-3</span>
+                        <span class="text-xs font-bold text-gray-500">12/10 - 12/12</span>
+                        <strong class="text-base block mt-1">高山飛驒美居酒店 (Mercure Hida Takayama)</strong>
+                        <p class="text-gray-600 text-xs mt-1">〒506-0026 Gifu, Takayama, Hanasatomachi, 4 Chome-311-1</p>
+                        <p class="text-gray-600 text-xs">📞 +81 577-35-2702</p>
+                        <p class="text-xs bg-gray-100 p-1.5 mt-1.5 rounded border border-gray-300 font-bold leading-relaxed">
+                            媽媽、方晴：高級雙床房 × 2<br>
+                            姊姊：高級雙人床 × 1
+                        </p>
+                    </div>
+                    <div class="border-t-2 border-dashed border-gray-300 pt-3">
+                        <span class="bg-lego-yellow text-black px-2 py-0.5 rounded font-bold mr-1 border-2 border-black">DAY 4-8</span>
+                        <span class="text-xs font-bold text-gray-500">12/12 - 12/16</span>
+                        <strong class="text-base block mt-1">Peace & Harmony (Airbnb)</strong>
+                        <p class="text-gray-600 text-xs mt-1">〒451-0052 Aichi, Nagoya, Nishi Ward, 1-chōme-5-7 Sakou</p>
+                        <p class="text-gray-600 text-xs">📞 +81 70-8978-7499</p>
+                        <p class="text-xs bg-yellow-100 text-yellow-800 p-1.5 mt-1.5 rounded border border-yellow-400 font-bold">
+                            <i class="fa-solid fa-key"></i> 確認碼：HMK8KX8AWE
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <a href="https://www.jma.go.jp/bosai/forecast/#area_type=offices&area_code=230000" target="_blank" class="lego-box bg-lego-blue text-white p-3 text-center flex flex-col items-center justify-center active:scale-95 transition-transform m-0 border-3 border-black shadow-[3px_3px_0_0_rgba(0,0,0,1)]">
+                    <i class="fa-solid fa-cloud-sun text-2xl mb-1 text-lego-yellow"></i>
+                    <span class="text-sm font-bold">愛知(名古屋)天氣</span>
+                </a>
+                <a href="https://www.jma.go.jp/bosai/forecast/#area_type=offices&area_code=210000" target="_blank" class="lego-box bg-white text-black p-3 text-center flex flex-col items-center justify-center active:scale-95 transition-transform m-0 border-3 border-black shadow-[3px_3px_0_0_rgba(0,0,0,1)]">
+                    <i class="fa-solid fa-snowflake text-2xl mb-1 text-lego-blue"></i>
+                    <span class="text-sm font-bold">岐阜(高山)天氣</span>
+                </a>
+            </div>
+
+            <div class="lego-box bg-lego-red text-white p-0">
+                <div class="bg-black text-white px-4 py-2 font-bold"><i class="fa-solid fa-phone"></i> 緊急聯絡</div>
+                <div class="p-4">
+                    <div class="flex justify-between items-center mb-3 bg-white text-black p-2 rounded border-2 border-black">
+                        <span class="font-bold">警察報案</span>
+                        <a href="tel:110" class="text-lego-red font-black text-xl">110</a>
+                    </div>
+                    <div class="flex justify-between items-center mb-3 bg-white text-black p-2 rounded border-2 border-black">
+                        <span class="font-bold">救護車 / 火警</span>
+                        <a href="tel:119" class="text-lego-red font-black text-xl">119</a>
+                    </div>
+                    <div class="mt-2 text-sm bg-black/20 p-2 rounded">
+                        <p class="font-bold text-yellow-300">台北駐大阪經濟文化辦事處</p>
+                        <a href="tel:+81662278623" class="underline font-mono text-base">(+81) 6-6227-8623</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lego-box bg-white p-0">
+                <div class="bg-black text-white px-4 py-2 font-bold"><i class="fa-solid fa-triangle-exclamation text-lego-red"></i> 旅遊注意與禁忌</div>
+                <div class="p-4">
+                    <ul class="text-sm space-y-3 font-bold">
+                        <li class="flex"><i class="fa-solid fa-xmark text-lego-red mt-1 mr-2 text-lg"></i> <span><strong class="text-lego-red">嚴禁肉類：</strong>禁止攜帶任何肉類製品（含泡麵肉塊）入境日本，抓到重罰。</span></li>
+                        <li class="flex"><i class="fa-solid fa-arrows-up-down text-lego-blue mt-1 mr-2 text-lg"></i> <span><strong class="text-lego-blue">手扶梯：</strong>名古屋地區搭乘手扶梯習慣<strong>「靠左站立」</strong>（與大阪不同）。</span></li>
+                        <li class="flex"><i class="fa-solid fa-hot-tub-person text-lego-green mt-1 mr-2 text-lg"></i> <span><strong class="text-lego-green">溫泉禮儀：</strong>多數禁止有刺青者進入，若有需求請使用刺青遮蓋貼紙；毛巾不可入水。</span></li>
+                        <li class="flex"><i class="fa-solid fa-house-chimney-crack text-orange-500 mt-1 mr-2 text-lg"></i> <span><strong class="text-orange-500">合掌村：</strong>請勿亂丟垃圾，尊重當地居民，切勿擅自闖入私人住宅區域。</span></li>
+                        <li class="flex"><i class="fa-solid fa-yen-sign text-yellow-500 mt-1 mr-2 text-lg"></i> <span><strong class="text-yellow-600">包車費用：</strong>請務必備妥足額現金支付包車費用。</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 底部導覽列 -->
+    <nav class="bg-white border-t-4 border-black h-[72px] shrink-0 flex justify-around items-center z-20 pb-safe shadow-[0_-4px_0_0_rgba(0,0,0,1)] relative">
+        <button onclick="switchTab('plan', this)" class="nav-item active flex flex-col items-center w-1/5 font-bold text-[10px]">
+            <i class="fa-solid fa-map-location-dot text-2xl mb-1"></i> PLAN
+        </button>
+        <button onclick="switchTab('guide', this)" class="nav-item flex flex-col items-center w-1/5 font-bold text-[10px]">
+            <i class="fa-solid fa-book-open-reader text-2xl mb-1"></i> GUIDE
+        </button>
+        <button onclick="switchTab('wallet', this)" class="nav-item flex flex-col items-center w-1/5 font-bold text-[10px]">
+            <i class="fa-solid fa-wallet text-2xl mb-1"></i> WALLET
+        </button>
+        <button onclick="switchTab('lists', this)" class="nav-item flex flex-col items-center w-1/5 font-bold text-[10px]">
+            <i class="fa-solid fa-list-check text-2xl mb-1"></i> LISTS
+        </button>
+        <button onclick="switchTab('info', this)" class="nav-item flex flex-col items-center w-1/5 font-bold text-[10px]">
+            <i class="fa-solid fa-circle-info text-2xl mb-1"></i> INFO
+        </button>
+    </nav>
+
+    <!-- 隱藏的 Canvas 畫布，用於在前端直接壓縮照片 -->
+    <canvas id="compress-canvas" class="hidden"></canvas>
+
+    <script>
+        // ================= 1. 行程資料 (PLAN) =================
+        const itineraryData = [
+            { day: 1, date: "12/9 (三)", title: "抵達與安頓", lodging: "BASE LAYER HOTEL",
+              timeline: [
+                  { time: "18:50", text: "抵達中部國際機場", highlight: true },
+                  { time: "交通", text: "機場接機26KK260974315", icon: "car" },
+                  { time: "晚餐", text: "世界の山ちゃん 長者町店 (飯店旁)", icon: "utensils", link: {text: "查看地圖", url: "https://www.google.com/maps/search/世界の山ちゃん+長者町店"} }
+              ]
+            },
+            { day: 2, date: "12/10 (四)", title: "雪鄉包車漫遊", lodging: "高山飛驒美居",
+              timeline: [
+                  { time: "08:15", text: "大廳集合", highlight: true, color: "bg-lego-red text-white" },
+                  { time: "08:30", text: "從名古屋出發 (10小時綠牌包車, 需雪胎, 用車到18:00)", highlight: true, color: "bg-lego-yellow text-black" },
+                  { time: "↓", text: "車程約 1.5 小時", isRoute: true },
+                  { time: "10:00", text: "參觀郡上八幡城、舊町社紀念館、井川小道餵魚 (停留至 11:30)" },
+                  { time: "午餐", text: "吉田屋美濃錦鰻魚飯", icon: "utensils", link: {text: "Google Maps", url: "https://www.google.com/maps/search/吉田屋美濃錦"} },
+                  { time: "↓", text: "車程約 50 分鐘", isRoute: true },
+                  { time: "14:00", text: "白川鄉合掌村散策 (2.5小時)。經典地標：荻町城跡展望台、であい橋、和田家、明善寺鄉土館。必吃：五平餅、飛驒牛串。" },
+                  { time: "↓", text: "車程約 50 分鐘", isRoute: true },
+                  { time: "17:30", text: "抵達高山" },
+                  { time: "晚餐", text: "寿々や手喜燒 (燒肉備案：味藏天國、丸明 飛驒高山店)", icon: "utensils" }
+              ]
+            },
+            { day: 3, date: "12/11 (五)", title: "高海拔纜車與雪地溫泉", lodging: "高山飛驒美居",
+              timeline: [
+                  { time: "早餐", text: "走路10分鐘有麥當勞、5分鐘有7-11", icon: "utensils" },
+                  { time: "08:30", text: "高山出發 (10小時包車, 用車到18:00)", highlight: true },
+                  { time: "↓", text: "車程約 1.2 小時", isRoute: true },
+                  { time: "10:00", text: "新穗高纜車。第一段：新穗高溫泉站→第二段：白樺平站→山頂區(觀景台、頂之森、槍之迴廊)" },
+                  { time: "午餐", text: "纜車站旁食事處午餐 (飛驒牛朴葉燒/拉麵)", icon: "utensils" },
+                  { time: "↓", text: "車程約 20 分鐘", isRoute: true },
+                  { time: "14:30", text: "奧飛驒熊牧場 (營業到16:00)" },
+                  { time: "備案", text: "平湯溫泉(泡腳)", icon: "map-pin" },
+                  { time: "↓", text: "車程約 55 分鐘", isRoute: true },
+                  { time: "17:00", text: "返回高山" },
+                  { time: "晚餐", text: "飛驒燒肉：味藏天國 / 丸明 ", icon: "utensils" }
+              ]
+            },
+            { day: 4, date: "12/12 (六)", title: "古城與百萬燈海", lodging: "Airbnb 平和屋",
+              timeline: [
+                  { time: "08:00", text: "高山朝市與老街散策" },
+                  { time: "11:00", text: "包車出發 (用車到21:00)", highlight: true },
+                  { time: "↓", text: "車程 2 小時 (中停長良川SA休息)", isRoute: true },
+                  { time: "13:00", text: "犬山城下町午餐＋散策 (停留3hr)。點心：守田漬、醬烤/山田五平餅、彩色串炸、厳骨庵。" },
+                  { time: "↓", text: "車程 1.1 小時", isRoute: true },
+                  { time: "17:00", text: "名花之里賞燈 (停留3hr)" },
+                  { time: "晚餐", text: "使用門票抵用券於園區內用餐", icon: "utensils" },
+                  { time: "↓", text: "車程 1 小時", isRoute: true },
+                  { time: "20:00", text: "返回名古屋 Airbnb" }
+              ]
+            },
+            { day: 5, date: "12/13 (日)", title: "市區文化與購物巡禮", lodging: "Airbnb 平和屋",
+              timeline: [
+                  { time: "09:30", text: "豐田紀念館 (周一休館)、則武之森 (NORITAKE)、AEON (逛&午餐)" },
+                  { time: "午餐", text: "PORK STEAK RESTAURANT", icon: "utensils" },
+                  { time: "↓", text: "有戰利品可先回住宿放", isRoute: true },
+                  { time: "14:30", text: "名古屋城 (武將隊表演、本丸御殿)" },
+                  { time: "15:00", text: "榮商圈：中部電力 MIRAI TOWER、OASIS 21、B1吉卜力/扭蛋森林。途經 HARBS 視情況，逛 Monbell、唐吉訶德。" },
+                  { time: "晚餐", text: "榮商圈：鳥開總本家 / 山本屋總本家 / 地雷也 / 麵家獅子丸", icon: "utensils" }
+              ]
+            },
+            { day: 6, date: "12/14 (一)", title: "賽車主題日", lodging: "Airbnb 平和屋",
+              timeline: [
+                  { time: "09:00", text: "出發", highlight: true },
+                  { time: "全日", text: "鈴鹿賽道樂園遊玩 (營業 11:00–20:30)" },
+                  { time: "交通", text: "近鐵特急至「白子站」➔轉乘三重交通公車/計程車 (全程約1.5hr)", icon: "train" },
+                  { time: "午餐", text: "樂園餐點", icon: "utensils" },
+                  { time: "晚上", text: "名古屋駅、BicCamera 名古屋駅西店購物" },
+                  { time: "晚餐", text: "名古屋駅周邊", icon: "utensils" }
+              ]
+            },
+            { day: 7, date: "12/15 (二)", title: "分組行動日", lodging: "Airbnb 平和屋",
+              timeline: [
+                  { time: "09:00", text: "出門採分組行動", highlight: true },
+                  { time: "生日組", text: "10:00 樂高樂園開園、磁浮鐵道。", icon: "cake-candles"},
+                  { time: "交通", text: "栄生駅 ➔ 名鐵名古屋 ➔ 轉青波線 ➔ 金城埠頭車站 (車程40min)", icon: "train" },
+                  { time: "景點組", text: "名古屋港水族館(09:30開園)、海洋博物館、港口大樓展望室、南極觀測船。", icon: "Attractions" },
+                  { time: "交通", text: "栄生駅 ➔ 金山駅 ➔ 轉名港線 ➔ 名古屋港駅 (車程35min)", icon: "train" },
+                  { time: "↓", text: "計程車程 20min", isRoute: true },
+                  { time: "景點組", text: "熱田神宮", icon: "Attractions" },
+                  { time: "↓", text: "地鐵車程 50min (神宮前➔名古屋➔新清洲)", isRoute: true },
+                  { time: "景點組", text: "清洲城參觀+城下町 (神隱少女)", icon: "Attractions" }
+              ]
+            },
+            { day: 8, date: "12/16 (三)", title: "招財貓與航空迷完美句點", lodging: "溫暖的家",
+              timeline: [
+                  { time: "09:30", text: "退房出發", highlight: true },
+                  { time: "交通", text: "機場接駁", icon: "car" },
+                  { time: "10:30", text: "常滑車站寄放行李。招財貓大道、巨型招財貓、陶器散步道。" },
+                  { time: "午餐", text: "常滑牛乳、柴魚貓咪糰子、AEON STYLE 超市", icon: "utensils" },
+                  { time: "↓", text: "車程 10min (地鐵或貓咪免費接駁車)", isRoute: true },
+                  { time: "14:00", text: "中部國際機場：參觀波音(T1)、仙貝之里(T1)。接著步行至第二航廈。" },
+                  { time: "16:30", text: "虎航(IT269) T2報到，19:40 起飛", highlight: true, color: "bg-lego-red text-white" }
+              ]
+            }
+        ];
+
+        // ================= 2. 深度導覽資料 (GUIDE) =================
+        const guideData = [
+            { day: "Day 2", title: "郡上八幡城 & 白川鄉合掌村", type: "text", tag: "歷史與文化", color: "bg-lego-red",
+              content: `<strong>郡上八幡城：</strong>日本最古老的木造重建城，被譽為「天空之城」。<br>
+              <strong>白川鄉合掌村：</strong>「合掌造」是為了抵抗嚴冬大雪，屋頂傾斜約60度如雙手合十。每隔30-40年需全村總動員進行「結(Yui)」的換屋頂工程。<br>
+              💡 <strong>冷知識：</strong>五平餅是用搗碎的粳米捏成橢圓形，塗上核桃或芝麻味噌醬烤製而成，雖然叫餅但其實是米！` },
+            { day: "Day 3", title: "新穗高纜車", type: "text", tag: "自然絕景", color: "bg-lego-blue",
+              content: `日本唯一的雙層纜車！搭乘第二段纜車可直達海拔2,156公尺的西穗高口站。山頂景觀台可360度將北阿爾卑斯山脈盡收眼底。若天氣允許，一定要去「頂之森」與「槍之迴廊」走走感受雪國魅力。` },
+            { day: "Day 4", title: "犬山城 & 名花之里", type: "text", tag: "國寶與百萬夜景", color: "bg-lego-yellow text-black",
+              content: `<strong>犬山城：</strong>日本現存最古老的天守閣，被指定為國寶。城下町保留了江戶時代的風貌，非常適合邊走邊吃。<br>
+              <strong>名花之里 (Nabana no Sato)：</strong>連續多年被評為日本第一的燈海！其中的「光之迴廊」長達200公尺，是由超過百萬顆燈泡組成的夢幻隧道。` },
+            { day: "Day 5", title: "名古屋城", type: "map", tag: "地標", color: "bg-lego-green",
+              content: `德川家康下令建造的巨城，屋頂上的金鯱是名古屋的象徵。本丸御殿內金碧輝煌的壁畫絕對不能錯過。`,
+              iframe: `https://www.openstreetmap.org/export/embed.html?bbox=136.894%2C35.180%2C136.904%2C35.188&amp;layer=mapnik&amp;marker=35.184%2C136.899` },
+            { day: "Day 5", title: "豐田紀念館 & 則武之森", type: "text", tag: "產業歷史", color: "bg-gray-600",
+              content: `<strong>豐田紀念館：</strong>見證 Toyota 從紡織機起家到成為世界汽車霸主的歷史。<br>
+              <strong>則武之森：</strong>百年高級陶瓷品牌 Noritake 的發源地，紅磚建築群充滿歐洲風情。` },
+            { day: "Day 6", title: "鈴鹿賽道樂園 (Suzuka Circuit)", type: "map", tag: "樂園", color: "bg-lego-red",
+              content: `結合賽車元素的獨特遊樂園，小孩可以親自駕駛各種主題車輛，完成任務還能拿到駕照卡！旁邊就是舉辦 F1 賽事的國際標準賽道。`,
+              iframe: `https://www.openstreetmap.org/export/embed.html?bbox=136.520%2C34.838%2C136.540%2C34.848&amp;layer=mapnik&amp;marker=34.843%2C136.530` },
+            { day: "Day 7", title: "日本樂高樂園 (Legoland)", type: "map", tag: "生日組專屬", color: "bg-lego-yellow text-black",
+              content: `亞洲第二座樂高樂園，分為七大主題區。「Miniland」使用超過1000萬塊積木重現日本地標。超適合喜歡積木的小壽星！`,
+              iframe: `https://www.openstreetmap.org/export/embed.html?bbox=136.838%2C35.047%2C136.848%2C35.053&amp;layer=mapnik&amp;marker=35.050%2C136.843` },
+            { day: "Day 7", title: "名古屋港水族館 & 清洲城", type: "map", tag: "長輩組專屬", color: "bg-lego-blue",
+              content: `<strong>水族館：</strong>分為南北兩館，擁有日本最大的海豚秀水池與珍貴的虎鯨。<br><strong>清洲城：</strong>織田信長的發跡地，紅色的跨欄橋是《神隱少女》取景的靈感來源之一。`,
+              iframe: `https://www.openstreetmap.org/export/embed.html?bbox=136.874%2C35.088%2C136.884%2C35.096&amp;layer=mapnik&amp;marker=35.092%2C136.879` },
+            { day: "Day 8", title: "常滑市招財貓大道", type: "map", tag: "陶藝之鎮", color: "bg-lego-green",
+              content: `常滑是日本六古窯之一，也是招財貓的故鄉。陶器散步道上可以看到巨大的守護貓「常喵 (とこにゃん)」，非常適合拍照留念。`,
+              iframe: `https://www.openstreetmap.org/export/embed.html?bbox=136.833%2C34.887%2C136.843%2C34.895&amp;layer=mapnik&amp;marker=34.891%2C136.838` }
+        ];
+
+        // ================= 3. 清單資料 (LISTS) =================
+        const checklistData = [
+            { category: "旅行必備", items: ["護照", "網卡", "日幣現金", "包車費用(現金)", "轉接頭", "充電器", "行動電源(隨身)", "紀念章收集本"] },
+            { category: "禦寒與衣物", items: ["保暖內衣", "內搭褲", "防風外套", "羽絨背心/外套", "毛帽/手套/圍巾", "防滑、防水鞋", "泳衣(溫泉用)", "內衣褲/襪子"] },
+            { category: "清潔護膚與藥物", items: ["個人盥洗用品", "護唇膏", "護手霜", "乳液", "個人藥物及護理用品"] }
+        ];
+
+        // ================= 初始化執行 =================
+        document.addEventListener('DOMContentLoaded', () => {
+            renderItinerary();
+            renderGuide();
+            renderChecklist();
+            loadMemo();
+            renderExpenses();
+        });
+
+        // ================= 頁籤切換 =================
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            element.classList.add('active');
+            
+            // 捲動回頂部
+            document.getElementById('main-content').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ================= 渲染 PLAN =================
+        function renderItinerary() {
+            const container = document.getElementById('itinerary-container');
+            let html = '';
+            
+            itineraryData.forEach(item => {
+                let timelineHtml = '';
+                item.timeline.forEach((point, index) => {
+                    if (point.isRoute) {
+                        timelineHtml += `
+                        <div class="flex items-start mb-3 relative z-10 pl-2">
+                            <div class="w-6 flex flex-col items-center mr-3 mt-1">
+                                <i class="fa-solid fa-arrow-down text-gray-400 text-xs"></i>
+                            </div>
+                            <div class="text-xs text-gray-500 font-bold bg-gray-100 px-2 py-0.5 rounded border border-gray-300">
+                                ${point.text}
+                            </div>
+                        </div>`;
+                    } else {
+                        let linkBtn = point.link ? `<a href="${point.link.url}" target="_blank" class="text-[10px] bg-black text-white px-2 py-1 rounded ml-2 whitespace-nowrap"><i class="fa-solid fa-location-dot text-lego-red"></i> MAP</a>` : '';
+                        let timeClass = point.highlight 
+                            ? `px-1.5 py-0.5 rounded border-2 border-black font-black text-xs ${point.color || 'bg-lego-red text-white'}` 
+                            : 'font-bold text-sm min-w-[45px] text-lego-blue';
+                        let iconHtml = point.icon ? `<i class="fa-solid fa-${point.icon} mr-1 text-gray-500"></i>` : '';
+                        
+                        timelineHtml += `
+                        <div class="flex items-start mb-4 relative z-10">
+                            <div class="w-3 h-3 bg-white border-3 border-black rounded-full mt-1.5 mr-3 shrink-0 relative z-20"></div>
+                            <div class="flex-1">
+                                <div class="flex items-center mb-1 flex-wrap gap-1">
+                                    <span class="${timeClass}">${point.time}</span>
+                                    ${linkBtn}
+                                </div>
+                                <div class="text-sm font-bold leading-relaxed text-gray-800">
+                                    ${iconHtml} ${point.text}
+                                </div>
+                            </div>
+                        </div>`;
+                    }
+                });
+
+                html += `
+                <div class="lego-box bg-white p-0 relative">
+                    <div class="bg-lego-yellow border-b-3 border-black px-4 py-2 flex justify-between items-center">
+                        <h2 class="font-black text-lg">Day ${item.day} - ${item.date}</h2>
+                        <span class="text-[10px] bg-white border-2 border-black px-1.5 py-0.5 rounded font-black">${item.lodging}</span>
+                    </div>
+                    <div class="p-4 relative">
+                        <h3 class="font-black text-xl mb-4 text-black border-b-2 border-dashed border-gray-300 pb-2">${item.title}</h3>
+                        <div class="relative">
+                            <div class="timeline-line"></div>
+                            ${timelineHtml}
+                        </div>
+                    </div>
+                </div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        // ================= 渲染 GUIDE =================
+        function renderGuide() {
+            const container = document.getElementById('guide-container');
+            let html = '';
+            
+            guideData.forEach(item => {
+                let mediaHtml = '';
+                if (item.type === 'map' && item.iframe) {
+                    mediaHtml = `
+                    <div class="border-b-3 border-black bg-gray-200">
+                        <iframe width="100%" height="200" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="${item.iframe}"></iframe>
+                    </div>`;
+                }
+                
+                html += `
+                <div class="lego-box bg-white p-0">
+                    ${mediaHtml}
+                    <div class="p-4">
+                        <div class="flex items-center mb-2">
+                            <span class="text-xs font-black bg-black text-white px-2 py-0.5 rounded mr-2 border-2 border-black">${item.day}</span>
+                            <span class="text-xs font-black ${item.color} ${item.color.includes('text-black') ? '' : 'text-white'} px-2 py-0.5 rounded border-2 border-black">${item.tag}</span>
+                        </div>
+                        <h3 class="text-lg font-black mb-2">${item.title}</h3>
+                        <p class="text-sm leading-relaxed font-semibold text-gray-700">${item.content}</p>
+                    </div>
+                </div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        // ================= 記帳工具 WALLET =================
+        let currentPhotoBase64 = "";
+        
+        function calculateTotal() {
+            const input = document.getElementById('calc-input').value;
+            const rate = parseFloat(document.getElementById('exchange-rate').value) || 0.215;
+            try {
+                // 安全過濾，僅保留數字與四則運算
+                const sanitized = input.replace(/[^0-9+\-*/.()]/g, '');
+                if(!sanitized) return;
+                
+                const totalJpy = Function(`"use strict"; return (${sanitized})`)();
+                const twd = Math.round(totalJpy * rate);
+                
+                document.getElementById('calc-result-jpy').textContent = Math.round(totalJpy).toLocaleString();
+                document.getElementById('calc-result-twd').textContent = twd.toLocaleString();
+                
+                // 自動帶入下方表單
+                document.getElementById('expense-amount').value = Math.round(totalJpy);
+            } catch (e) {
+                alert("算式格式錯誤");
+            }
+        }
+
+        function handlePhotoSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    // Canvas 壓縮圖片，最大寬度 300px
+                    const canvas = document.getElementById('compress-canvas');
+                    const ctx = canvas.getContext('2d');
+                    const MAX_WIDTH = 300;
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    currentPhotoBase64 = canvas.toDataURL('image/jpeg', 0.6);
+                    document.getElementById('photo-preview').src = currentPhotoBase64;
+                    document.getElementById('photo-preview-container').classList.remove('hidden');
+                }
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        function addExpense() {
+            const name = document.getElementById('expense-name').value.trim();
+            const amount = parseFloat(document.getElementById('expense-amount').value);
+            const rate = parseFloat(document.getElementById('exchange-rate').value) || 0.215;
+
+            if (!name || isNaN(amount)) {
+                alert("請填寫購買品項與日幣金額");
+                return;
+            }
+
+            const expenses = JSON.parse(localStorage.getItem('lego_trip_expenses')) || [];
+            expenses.push({
+                id: Date.now(),
+                name: name,
+                jpy: amount,
+                twd: Math.round(amount * rate),
+                photo: currentPhotoBase64,
+                date: new Date().toLocaleDateString('zh-TW', {month:'2-digit', day:'2-digit'})
+            });
+            
+            try {
+                localStorage.setItem('lego_trip_expenses', JSON.stringify(expenses));
+            } catch (e) {
+                alert("手機容量不足！請刪除部分照片紀錄。");
+                return;
+            }
+
+            // Reset
+            document.getElementById('expense-name').value = '';
+            document.getElementById('expense-amount').value = '';
+            document.getElementById('calc-input').value = '';
+            currentPhotoBase64 = '';
+            document.getElementById('photo-preview-container').classList.add('hidden');
+            
+            renderExpenses();
+        }
+
+        function renderExpenses() {
+            const expenses = JSON.parse(localStorage.getItem('lego_trip_expenses')) || [];
+            const container = document.getElementById('expense-list');
+            let totalTwd = 0;
+            
+            if (expenses.length === 0) {
+                container.innerHTML = '<div class="text-sm text-gray-400 text-center py-6 border-3 border-dashed border-gray-300 rounded-lg font-bold">目前還沒有花錢喔！</div>';
+                document.getElementById('total-twd-display').textContent = '總計 NT$ 0';
+                return;
+            }
+
+            let html = '';
+            [...expenses].reverse().forEach(exp => {
+                totalTwd += exp.twd;
+                let imgHtml = exp.photo ? `<img src="${exp.photo}" class="w-14 h-14 rounded-lg border-2 border-black object-cover mr-3 bg-white">` : '';
+                
+                html += `
+                <div class="flex items-center justify-between border-3 border-black rounded-xl p-3 bg-white shadow-[2px_2px_0_0_rgba(0,0,0,1)] relative overflow-hidden">
+                    <div class="absolute w-2 h-full bg-lego-yellow left-0 top-0 border-r-3 border-black"></div>
+                    <div class="flex items-center pl-3 w-full">
+                        ${imgHtml}
+                        <div class="flex-1">
+                            <div class="font-black text-sm mb-1">${exp.name}</div>
+                            <div class="text-xs font-bold text-gray-600">
+                                ¥${exp.jpy.toLocaleString()} <span class="bg-gray-200 px-1 rounded text-[10px] ml-1">NT$${exp.twd.toLocaleString()}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="deleteExpense(${exp.id})" class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 border-2 border-black flex items-center justify-center active:bg-lego-red active:text-white transition-colors shrink-0">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>`;
+            });
+            
+            document.getElementById('total-twd-display').textContent = `總計 NT$ ${totalTwd.toLocaleString()}`;
+            container.innerHTML = html;
+        }
+
+        function deleteExpense(id) {
+            if(confirm("確定要刪除這筆花費嗎？")) {
+                let expenses = JSON.parse(localStorage.getItem('lego_trip_expenses')) || [];
+                expenses = expenses.filter(exp => exp.id !== id);
+                localStorage.setItem('lego_trip_expenses', JSON.stringify(expenses));
+                renderExpenses();
+            }
+        }
+
+        // ================= 4. 清單與備忘錄 (LISTS) =================
+        function renderChecklist() {
+            const container = document.getElementById('checklist-container');
+            const savedState = JSON.parse(localStorage.getItem('lego_trip_checklist')) || {};
+            let html = '';
+
+            checklistData.forEach((group, index) => {
+                html += `<div class="font-black text-sm text-black mt-4 mb-2 bg-gray-200 inline-block px-2 py-0.5 rounded border-2 border-black"><i class="fa-solid fa-tag text-lego-blue mr-1"></i> ${group.category}</div>`;
+                group.items.forEach((item, i) => {
+                    const key = `check_${index}_${i}`;
+                    const isChecked = savedState[key] ? 'checked' : '';
+                    html += `
+                    <label class="flex items-center p-2 border-2 border-black rounded-lg bg-gray-50 active:bg-gray-200 transition-colors shadow-[1px_1px_0_0_rgba(0,0,0,1)]">
+                        <input type="checkbox" class="w-5 h-5 mr-3 accent-lego-red" id="${key}" ${isChecked} onchange="saveChecklist()">
+                        <span class="text-sm font-bold ${isChecked ? 'line-through text-gray-400' : 'text-gray-800'}" id="text_${key}">${item}</span>
+                    </label>`;
+                });
+            });
+            container.innerHTML = html;
+        }
+
+        function saveChecklist() {
+            const state = {};
+            const checkboxes = document.querySelectorAll('#checklist-container input[type="checkbox"]');
+            checkboxes.forEach(cb => {
+                state[cb.id] = cb.checked;
+                const textSpan = document.getElementById(`text_${cb.id}`);
+                if(cb.checked) {
+                    textSpan.classList.add('line-through', 'text-gray-400');
+                    textSpan.classList.remove('text-gray-800');
+                } else {
+                    textSpan.classList.remove('line-through', 'text-gray-400');
+                    textSpan.classList.add('text-gray-800');
+                }
+            });
+            localStorage.setItem('lego_trip_checklist', JSON.stringify(state));
+        }
+
+        function loadMemo() {
+            const memo = localStorage.getItem('lego_trip_memo') || '';
+            const inputEl = document.getElementById('memo-input');
+            inputEl.value = memo;
+            parseMemoUrls(memo);
+        }
+
+        function saveMemo() {
+            const memo = document.getElementById('memo-input').value;
+            localStorage.setItem('lego_trip_memo', memo);
+            parseMemoUrls(memo);
+        }
+
+        function parseMemoUrls(text) {
+            const container = document.getElementById('memo-links');
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            const urls = text.match(urlRegex) || [];
+            
+            if(urls.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = '<div class="text-[10px] font-black text-gray-500 mb-1">快速連結區：</div>';
+            urls.forEach((url, idx) => {
+                let domain = "外部連結";
+                try { domain = new URL(url).hostname.replace('www.', ''); } catch(e) {}
+                html += `<a href="${url}" target="_blank" class="lego-btn bg-lego-blue text-white px-3 py-2 text-sm text-center block truncate border-2 border-black"><i class="fa-solid fa-arrow-up-right-from-square mr-1 text-lego-yellow"></i> 前往 ${domain}</a>`;
+            });
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

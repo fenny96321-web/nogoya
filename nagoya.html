@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>家庭旅行手帳</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="旅行手帳">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#d01012">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#f3efe4;--stud:rgba(0,0,0,.07);--card:#fff;--tx:#1b2a34;--sub:#5d6b75;--red:#d01012;--blue:#0055bf;--yel:#f2cd37;--grn:#237841;--org:#fe8a18;--ink:#1b2a34;--bd:#1b2a34;--acs:#fff3bf;--ac:#0055bf;--dg:#c0392b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#13202a;--stud:rgba(255,255,255,.06);--card:#1f3140;--tx:#f4f7f9;--sub:#a9bac6;--ink:#0b141b;--bd:#41596c;--acs:#3a3410;--ac:#7db3ff;--dg:#ff8a7a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#13202a;--stud:rgba(255,255,255,.06);--card:#1f3140;--tx:#f4f7f9;--sub:#a9bac6;--ink:#0b141b;--bd:#41596c;--acs:#3a3410;--ac:#7db3ff;--dg:#ff8a7a;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background-color:var(--bg);background-image:radial-gradient(circle,var(--stud) 5px,transparent 6px);background-size:32px 32px;color:var(--tx);font-family:"Fredoka",-apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;font-size:16px}
+main{max-width:560px;margin:0 auto;padding:22px 16px 100px}
+header{position:relative;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin:6px 0 20px;padding:16px;background:var(--red);color:#fff;border-radius:12px;box-shadow:0 5px 0 #8f0a0c}
+header::before{content:"";position:absolute;left:12px;right:12px;top:-11px;height:12px;background:radial-gradient(circle at 16px 12px,var(--red) 9px,transparent 9.5px);background-size:32px 12px;background-repeat:repeat-x}
+h1{font-size:22px;font-weight:700;margin:0 0 4px;letter-spacing:.5px}
+.sub{color:var(--sub);font-size:14px}
+header .sub{color:#ffe38a;font-weight:600}
+button{font:inherit;color:inherit;cursor:pointer}
+.ib{background:var(--yel);color:#1b2a34;border:3px solid var(--ink);border-radius:10px;padding:5px 12px;font-weight:700;box-shadow:0 3px 0 var(--ink)}
+.ib:active,.chip:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.chips{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 14px}
+.chip{flex:none;border:3px solid var(--bd);background:var(--card);border-radius:10px;padding:5px 14px;font-size:14px;font-weight:700;box-shadow:0 3px 0 var(--ink)}
+.chip.on{background:var(--yel);color:#1b2a34;border-color:var(--ink)}
+.stop,.info,.row{--c:var(--red);background:var(--card);border:3px solid var(--bd);border-radius:12px;box-shadow:0 4px 0 var(--ink);margin-bottom:14px}
+.stop:nth-of-type(4n+2),.info:nth-of-type(4n+2){--c:var(--blue)}
+.stop:nth-of-type(4n+3),.info:nth-of-type(4n+3){--c:var(--org)}
+.stop:nth-of-type(4n+4),.info:nth-of-type(4n+4){--c:var(--grn)}
+.stop{display:flex;gap:12px;padding:12px;border-left:14px solid var(--c)}
+.time{flex:none;align-self:flex-start;width:56px;text-align:center;background:var(--yel);color:#1b2a34;border-radius:8px;padding:3px 0;font-weight:700;font-size:14px}
+.body{flex:1;min-width:0}
+.name{font-weight:700}
+.note{color:var(--sub);font-size:14px;margin-top:3px;white-space:pre-wrap;word-break:break-word}
+.acts{display:flex;gap:8px;margin-top:8px}
+.acts a,.acts button{font-size:13px;font-weight:700;color:#fff;background:var(--blue);border:0;border-radius:8px;padding:4px 12px;text-decoration:none}
+.add{width:100%;border:3px dashed var(--ac);background:transparent;color:var(--ac);border-radius:12px;padding:12px;margin-top:4px;font-weight:700}
+.row{display:flex;align-items:center;gap:10px;padding:12px;margin-bottom:10px;border-radius:10px}
+.row input[type=checkbox]{width:24px;height:24px;accent-color:var(--grn);flex:none}
+.row.done .t{text-decoration:line-through;color:var(--sub)}
+.row .t{flex:1;word-break:break-word}
+.x{background:none;border:0;color:var(--sub);font-size:18px}
+.info{padding:12px;border-left:14px solid var(--c)}
+.info .k{font-size:13px;color:var(--sub);font-weight:700}
+.info .v{white-space:pre-wrap;word-break:break-word;margin-top:2px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--ink);border-top:4px solid var(--red);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;border:0;background:none;padding:10px 0 8px;font-size:12px;font-weight:700;color:#cfd8de}
+nav button b{display:block;font-size:20px;font-weight:400}
+nav button.on{color:var(--yel)}
+.mask{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center;z-index:9}
+.sheet{background:var(--card);width:100%;max-width:560px;border:3px solid var(--bd);border-bottom:0;border-radius:18px 18px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px))}
+.sheet h3{margin:0 0 12px}
+.sheet label{display:block;font-size:13px;font-weight:700;color:var(--sub);margin:10px 0 4px}
+.sheet input,.sheet textarea{width:100%;font:inherit;color:var(--tx);background:var(--bg);border:3px solid var(--bd);border-radius:10px;padding:9px}
+.sheet .bar{display:flex;gap:8px;margin-top:16px}
+.sheet .bar button{flex:1;padding:10px;border-radius:10px;border:3px solid var(--bd);background:var(--bg);font-weight:700}
+.sheet .bar .p{background:var(--red);color:#fff;border-color:var(--ink)}
+.sheet .bar .d{color:var(--dg)}
+.empty{text-align:center;color:var(--sub);padding:28px 0}
+.tip{font-size:13px;color:var(--tx);background:var(--acs);border:3px dashed var(--yel);border-radius:12px;padding:10px;margin-top:14px}
+.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:6px 0 14px}
+.keys button{padding:16px 0;font-size:20px;font-weight:700;border:3px solid var(--bd);background:var(--card);border-radius:12px;box-shadow:0 3px 0 var(--ink)}
+.keys button:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.keys .op{background:var(--yel);color:#1b2a34}
+.keys .eq{background:var(--red);color:#fff}
+.keys .ac{background:var(--blue);color:#fff;font-size:16px}
+.amt{font-weight:700;white-space:nowrap}
+</style>
+</head>
+<body>
+<main>
+<header>
+ <div><h1 id="title"></h1><div class="sub" id="meta"></div></div>
+ <button class="ib" id="setBtn">編輯</button>
+</header>
+<div id="view"></div>
+</main>
+<nav>
+ <button data-v="plan"><b>🧱</b>行程</button>
+ <button data-v="check"><b>🧩</b>清單</button>
+ <button data-v="money"><b>💴</b>記帳</button>
+ <button data-v="calc"><b>🧮</b>計算機</button>
+ <button data-v="info"><b>🚩</b>資訊</button>
+</nav>
+<script>
+var KEY='family-trip-nagoya-v3';
+function s(t,n,o){return{t:t,n:n,note:o||''}}
+var def={title:'名古屋 8 天 7 夜｜Ziv 生日之旅',start:'2026-12-09',days:[
+{stops:[s('18:50','中部國際機場','抵達，機場接送（訂單 #26KK260974315，18:50 接機）前往飯店'),s('20:00','BASE LAYER HOTEL NAGOYA NISHIKI','入住（12/9–10）\n電話 +81 52-265-7295'),s('20:30','世界の山ちゃん 長者町店','晚餐（飯店旁）')]},
+{stops:[s('08:15','BASE LAYER HOTEL NAGOYA NISHIKI','大廳集合，08:30 準時出發\n綠牌包車 10 小時（Day 1），請確認已換雪胎'),
+s('10:00','郡上八幡城','車程約 1.5 小時，直達山頂天守閣，走路下山約 15 分鐘\n舊町社紀念館旁「井川小道」餵魚'),
+s('11:30','吉田屋美濃錦','午餐：鰻魚飯（已預約）\n其他：郡上香魚、雞醬燒'),
+s('14:00','白川鄉合掌村','車程 50 分，散策 2.5 小時\n荻町城跡展望台 → であい橋 → 和田家 → 明善寺郷土館 → 神田家或長瀬家（擇一）→ 主街五平餅、飛驒牛串\n停車：村營せせらぎ公園駐車場'),
+s('17:30','Mercure Hida Takayama','抵達高山，入住（12/10–12）\n電話 +81 577-35-2702\n用車到 18:00'),
+s('18:30','寿々や 高山','晚餐：寿々や（視排隊人潮，Day 2、3 擇一天吃到即可）\n燒肉備案：味藏天國、丸明 飛驒高山店')]},
+{stops:[s('07:30','高山飯店附近','早餐：走路 10 分有麥當勞、5 分有 7-11'),
+s('08:30','Mercure Hida Takayama','集合出發，綠牌包車 10 小時（Day 2）'),
+s('10:00','新穗高纜車','車程約 1.2 小時\n第一段：新穗高溫泉站 → 第二段：白樺平站 → 山頂區（觀景台、頂之森、槍之迴廊）\n兩段營運時間與票價分開計算\nhttps://shinhotaka-ropeway.jp/zh-TW/\n小吃：白樺平站現烤可頌、飛驒牛咖哩麵包；山頂 CAFÉ GOKAN 霜淇淋'),
+s('12:30','新穗高纜車站 食事處','午餐：飛驒牛朴葉燒／拉麵'),
+s('14:30','奧飛驒熊牧場','車程約 20 分，營業到 16:00'),
+s('備案','飛驒大鐘乳石洞','行程備案，視當天狀況決定，車程約 30 分'),
+s('17:00','高山','車程約 55 分返回，用車到 18:00（可以先用晚餐）\n高山有 UQ、西松屋、唐吉訶德'),
+s('18:30','寿々や 高山','晚餐：壽喜燒（寿々や，視排隊人潮決定哪天吃）')]},
+{stops:[s('08:00','高山朝市','朝市＋老街'),
+s('11:00','長良川SA','出發前往犬山，車程約 2 小時，中途停長良川 SA 休息\n綠牌包車 11:00 起用車 10 小時，用到 21:00（Day 3）'),
+s('13:00','犬山城下町','午餐＋散策約 2.5 小時（13:00–15:30），含三光稻荷神社\n老街復古串燒、豆腐田樂\n點心：守田漬、醬烤五平餅、山田五平餅、彩色串炸、厳骨庵'),
+s('15:30','出發前往名花之里','車程約 1.1 小時'),
+s('16:40','名花之里','賞燈約 3 小時，晚餐在園區內用'),
+s('20:00','名古屋 Airbnb','返回名古屋，入住（12/12–16）\n451-0052 Aichi, Nagoya, Nishi Ward, 1-chōme-5-7 Sakou')]},
+{stops:[s('09:00','豐田紀念館','地鐵到栄生駅，步行'),
+s('11:00','則武之森','NORITAKE 博物館，徒步約 7 分鐘'),
+s('12:00','AEON 則武之森','逛街＋午餐\n午餐候選：豬排 PORK STEAK RESTAURANT\n有戰利品可先回住宿放'),
+s('14:30','名古屋城','視情況去（可略過）｜計程車約 15–20 分鐘\n武將隊表演、本丸御殿\n表演時間：https://nagoyajo.rdy.jp/'),
+s('15:00','中部電力 MIRAI TOWER','榮商圈：展望台 → OASIS 21 → B1 吉卜力、扭蛋森林、Nintendo NAGOYA\n（名古屋城視情況去，不去就直接從午餐地點前往榮商圈）'),
+s('17:30','HARBS 栄','路過看排隊狀況'),
+s('18:00','Montbell 名古屋栄店','另有唐吉訶德栄本店、Bic Camera'),
+s('19:00','鳥開總本家 栄','晚餐候選：鳥開總本家（親子丼）、山本屋總本家（味噌烏龍麵）、地雷也（天婦羅飯糰）、麵家獅子丸（拉麵）')]},
+{stops:[s('08:30','Airbnb 出發','租車出發'),
+s('09:30','鈴鹿賽道樂園','9:30–10:00 開園，15:00 離開\n午餐：樂園內賽車主題餐點'),
+s('16:00','三井OUTLET PARK 爵士之夢長島','16:00–18:20（含晚餐），18:20 準時出發回名古屋\n車程約 50–60 分，請用導航實測；也可改去樂園旁的 AEON'),
+s('19:30','Apollostation Self 名駅','24 小時自助式，離還車店約 0.6 公里（依地圖座標估算），加滿油約 10–15 分\n備案：ENEOS Nakamura（24 小時自助）。有人服務的 ENEOS Dr.Drive 柳橋營業到 20:00，不建議'),
+s('20:00','名古屋新幹線口店 租車','還車（20:00 前）\n名古屋市中村区椿町21-13\n21-13 Tsubaki-cho, Nakamura-ku, Nagoya-shi, Aichi 453-0015'),
+s('20:15','Bic Camera 名古屋','還車處旁邊，走路 4 分鐘')]},
+{stops:[s('07:30','Airbnb 集合','07:30 集合，09:00 出門，分兩組行動'),
+s('10:00','日本樂高樂園','生日組｜栄生駅 → 名鐵名古屋 → 青波線 → 金城埠頭，約 40 分\n樂高樂園 10:00 開園（磁浮鐵道館週二休館，取消）\n午餐：園內用餐（待確認）\n結束後可去 Bic Camera'),
+s('09:30','名古屋港水族館','姐姐組｜栄生駅 → 金山駅 → 名港線 → 名古屋港駅\n四館：水族館（9:30 開館）、海洋博物館、港口大樓展望室、南極觀測船'),
+s('13:00','熱田神宮','姐姐組｜計程車約 20 分鐘'),
+s('15:00','清洲城','姐姐組｜神宮前駅 → 名古屋駅 → 新清洲駅，參觀＋城下町（神隱少女）\n回程地鐵約 25 分回栄生駅')]},
+{stops:[s('09:30','Airbnb 出發','機場接送（訂單 #26KK259174958，09:30 送機）\n請向接送公司確認可改送「第一航廈 3 樓出發大廳」，車程約 45–60 分'),
+s('10:30','中部國際機場 第一航廈','3 樓出發大廳寄放行李（6:30–21:30），行李箱每件約 ¥550／天'),
+s('10:50','仙貝之里（T1）','買蝦餅，約 25 分（用掉原本的等待時間），先決定好數量'),
+s('11:15','中部國際機場站','名鐵約 5 分鐘到常滑，每位大人約 ¥330'),
+s('11:30','招財貓大道','招財貓大道＋巨型招財貓，約 40 分'),
+s('12:10','常滑站周邊 午餐','午餐 50 分：常滑牛乳、柴魚貓咪糰子，或 AEON STYLE 超市熟食'),
+s('13:00','常滑陶器散步道','A 路線約 1.6 公里，一般 60–90 分，這裡排 80 分（土管坂、DENDEN 坂、拍照）'),
+s('14:20','常滑駅','搭名鐵回機場，14:40 左右到中部國際機場站'),
+s('14:45','FLIGHT OF DREAMS','Flight Park 10:00–17:00，入場免費（部分遊樂收費）\n參觀與兒童區約 75 分，16:00 結束'),
+s('16:00','FLIGHT OF DREAMS 西雅圖露台','點心或提早用餐，約 30 分（營業到 18:30）；晚餐也可改在機場內'),
+s('16:30','中部國際機場 第一航廈','取回行李（3 樓，營業到 21:30），再步行約 9 分鐘到第二航廈'),
+s('16:45','中部國際機場 第二航廈','虎航 IT269 報到＋退稅（請確認退稅櫃檯位置與時間）\n報到櫃檯開關時間以虎航通知為準\n晚餐：機場內'),
+s('19:40','中部國際機場','IT269 名古屋 19:40 → 高雄 22:35')]}
+],
+checks:[{t:'護照（效期六個月以上）',d:0},{t:'虎航 IT268 / IT269 電子機票',d:0},{t:'包車公司確認雪胎（Day 2–4）',d:0},{t:'租車所需證件（Day 6）',d:0},{t:'保暖雪地衣物、防滑鞋',d:0},{t:'Ziv 的藥品與兒童用品',d:0},{t:'日圓現金／信用卡',d:0},{t:'網路／eSIM／行動電源',d:0},{t:'旅遊保險',d:0},{t:'Day 2 午餐吉田屋美濃錦預約確認',d:0}],
+info:[{k:'旅遊人數',v:'6 大 1 小，5 歲 Ziv 的生日之旅'},
+{k:'航班（虎航）',v:'去程 IT268：高雄 14:50 → 名古屋 18:50\n回程 IT269：名古屋 19:40 → 高雄 22:35'},
+{k:'住宿 12/9–10',v:'BASE LAYER HOTEL NAGOYA NISHIKI\n460-0003 Aichi, Nagoya, Naka Ward, Nishiki, 2 Chome-6-30\n+81 52-265-7295\n房間：特大床房（含早餐）×2、大床房（含早）×1'},
+{k:'住宿 12/10–12',v:'高山飛驒美居酒店 Mercure Hida Takayama\n4 Chome-311-1 Hanasatomachi, Takayama, Gifu 506-0026\n+81 577-35-2702\n房間：高級雙床房 ×2、高級雙人床 ×1'},
+{k:'住宿 12/12–16',v:'Airbnb\n451-0052 Aichi, Nagoya, Nishi Ward, 1-chōme-5-7 Sakou\n確認碼：HMK8KX8AWE\n電話：+81 70-8978-7499'},
+{k:'機場接送',v:'接機：訂單編號 #26KK260974315，12/9 18:50 接機\n送機：訂單編號 #26KK259174958，12/16 09:30 送機'},
+{k:'包車與冬季安全',v:'Day 2、3 綠牌包車各 10 小時，用車到 18:00；Day 4 為 11:00 起用車 10 小時（到 21:00）\n12 月前往高山與新穗高，務必確認派出車輛已換雪胎（スタッドレスタイヤ）'},
+{k:'緊急聯絡',v:''}]};
+var S,view='plan',day=0;
+try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}
+if(!S||!S.days)S=JSON.parse(JSON.stringify(def));
+if(!S.v||S.v<2){S.v=2;['發熱衣（內層）','刷毛外套或輕羽絨（中層）','防風防水外套（外層）','發熱褲＋防風或防水長褲（Ziv 雪褲）','毛帽、圍脖、耳罩','防水手套 ×2 雙（Ziv 備用）','厚羊毛襪（多備一雙）','防水防滑靴（長輩加防滑鞋套）','太陽眼鏡','貼式暖暖包、保溫瓶','行動電源、護唇膏、乳液'].forEach(function(n){var t='12/11 新穗高｜'+n;if(!S.checks.some(function(c){return c.t===t}))S.checks.push({t:t,d:0})});save()}
+if(S.v<3){S.v=3;S.title=def.title;S.start=def.start;S.days=JSON.parse(JSON.stringify(def.days));S.info=JSON.parse(JSON.stringify(def.info));save()}
+S.exp=S.exp||[];S.rate=S.rate||0.215;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function lk(s){return esc(s).replace(/https?:\/\/[^\s<]+/g,function(u){return '<a href="'+u+'" target="_blank" rel="noopener" style="color:var(--ac)">'+u+'</a>'})}
+function $(i){return document.getElementById(i)}
+
+function dayLabel(i){
+ if(S.start){var d=new Date(S.start+'T00:00:00');d.setDate(d.getDate()+i);
+  return 'D'+(i+1)+' '+(d.getMonth()+1)+'/'+d.getDate()}
+ return 'D'+(i+1)}
+function head(){
+ $('title').textContent=S.title;
+ var m='';
+ if(S.start){var n=Math.ceil((new Date(S.start+'T00:00:00')-new Date(new Date().toDateString()))/864e5);
+  m=n>0?'距離出發還有 '+n+' 天':n===0?'今天出發！':'旅程進行中／已結束';}
+ else m='點右上角「編輯」設定出發日期';
+ $('meta').textContent=m;
+ document.title=S.title;
+ document.querySelectorAll('nav button').forEach(function(b){b.className=b.dataset.v===view?'on':''});
+}
+var CATS='餐飲／交通／門票／購物／住宿／其他',cx='';
+function fmt(n){return (Math.round(n*100)/100).toLocaleString()}
+function yen(n){return '¥'+Math.round(n).toLocaleString()}
+function twd(n){return 'NT$'+Math.round(n*S.rate).toLocaleString()}
+function calcEval(s){
+ var tk=s.match(/\d+\.?\d*|\.\d+|[+\-×÷]/g);
+ if(!tk||tk.join('')!==s||tk.length%2===0)return null;
+ var nums=[],ops=[],i;
+ for(i=0;i<tk.length;i++){if(i%2===0){if(/[+\-×÷]/.test(tk[i]))return null;nums.push(parseFloat(tk[i]))}else{if(!/[+\-×÷]/.test(tk[i]))return null;ops.push(tk[i])}}
+ var n2=[nums[0]],o2=[];
+ ops.forEach(function(o,k){if(o==='×')n2[n2.length-1]*=nums[k+1];else if(o==='÷')n2[n2.length-1]/=nums[k+1];else{o2.push(o);n2.push(nums[k+1])}});
+ var r=n2[0];o2.forEach(function(o,k){r=o==='+'?r+n2[k+1]:r-n2[k+1]});
+ return isFinite(r)?r:null}
+function press(k){
+ var ops='+-×÷',r;
+ if(k==='C')cx='';
+ else if(k==='⌫')cx=cx.slice(0,-1);
+ else if(k==='='){r=calcEval(cx);if(r!=null)cx=String(Math.round(r*1e6)/1e6)}
+ else if(k==='記帳'){r=calcEval(cx);if(r!=null&&r>0){expForm(null,Math.round(r));return}}
+ else if(ops.indexOf(k)>=0){if(!cx)return;if(ops.indexOf(cx.slice(-1))>=0)cx=cx.slice(0,-1);cx+=k}
+ else cx+=k;
+ render()}
+function calcView(){
+ var r=calcEval(cx);
+ var h='<div class="info" style="--c:var(--red);text-align:right"><div class="k" style="min-height:18px">'+esc(cx||'0')+'</div><div class="v" style="font-size:30px;font-weight:700">'+(r==null?'':fmt(r))+'</div></div>';
+ if(r!=null)h+='<div class="sub" style="margin:0 2px 10px">日圓 → 台幣：¥'+fmt(r)+' ≈ NT$'+fmt(r*S.rate)+'<br>台幣 → 日圓：NT$'+fmt(r)+' ≈ ¥'+fmt(r/S.rate)+'<br>匯率 1 日圓 = '+S.rate+' 台幣（到「記帳」分頁可修改）</div>';
+ var keys=[['C','ac'],['⌫','ac'],['÷','op'],['×','op'],['7'],['8'],['9'],['-','op'],['4'],['5'],['6'],['+','op'],['1'],['2'],['3'],['=','eq'],['0'],['00'],['.'],['記帳','ac']];
+ h+='<div class="keys">';
+ keys.forEach(function(k){h+='<button data-k="'+k[0]+'"'+(k[1]?' class="'+k[1]+'"':'')+'>'+k[0]+'</button>'});
+ return h+'</div>'}
+function moneyView(){
+ var tot=0,cat={},pay={};
+ S.exp.forEach(function(e){tot+=e.a;cat[e.c]=(cat[e.c]||0)+e.a;if(e.p)pay[e.p]=(pay[e.p]||0)+e.a});
+ var h='<div class="info" style="--c:var(--yel)"><div class="k">總支出</div><div class="v" style="font-size:26px;font-weight:700">'+yen(tot)+'</div><div class="sub">約 '+twd(tot)+'｜匯率 1 日圓 = '+S.rate+' 台幣 <button class="x" style="font-size:13px;color:var(--ac)" id="rateBtn">改匯率</button></div><div class="sub">匯率不會自動更新，出發前請自行確認</div></div>';
+ function grp(title,m,c){var ks=Object.keys(m);if(!ks.length)return '';var s='<div class="info" style="--c:'+c+'"><div class="k">'+title+'</div>';ks.forEach(function(k){s+='<div style="display:flex;justify-content:space-between;gap:8px;margin-top:4px"><span>'+esc(k)+'</span><span class="amt">'+yen(m[k])+'（'+twd(m[k])+'）</span></div>'});return s+'</div>'}
+ h+=grp('分類',cat,'var(--blue)')+grp('付款人',pay,'var(--grn)');
+ h+='<div class="sub" style="margin:4px 0 8px">明細（點一下可編輯或刪除）</div>';
+ if(!S.exp.length)h+='<div class="empty">還沒有支出</div>';
+ for(var i=S.exp.length-1;i>=0;i--){var e=S.exp[i];h+='<div class="row" data-ee="'+i+'"><span class="t">'+esc(e.n)+'<div class="sub">'+esc((e.d||'').slice(5).replace('-','/'))+' '+esc(e.c)+(e.p?'｜'+esc(e.p):'')+'</div></span><b class="amt">'+yen(e.a)+'</b></div>'}
+ return h+'<button class="add" id="addExp">＋ 記一筆支出</button>'}
+function expForm(i,amt){
+ var e=i==null?{d:new Date().toISOString().slice(0,10),n:'',a:amt||'',c:'餐飲',p:''}:S.exp[i];
+ modal(i==null?'記一筆支出':'編輯支出',[{l:'項目',v:e.n},{l:'金額（日圓）',v:e.a,type:'number'},{l:'分類（'+CATS+'）',v:e.c},{l:'付款人（選填）',v:e.p},{l:'日期',v:e.d,type:'date'}],
+  function(v){var a=parseFloat(v[1]);if(!v[0]||!(a>0))return;var o={n:v[0],a:a,c:v[2]||'其他',p:v[3],d:v[4]};if(i==null)S.exp.push(o);else S.exp[i]=o},
+  i==null?null:function(){S.exp.splice(i,1)})}
+function render(){head();var h='';
+ if(view==='plan'){
+  if(day>=S.days.length)day=S.days.length-1;
+  h+='<div class="chips">';
+  S.days.forEach(function(_,i){h+='<button class="chip'+(i===day?' on':'')+'" data-day="'+i+'">'+dayLabel(i)+'</button>'});
+  h+='<button class="chip" id="addDay">＋ 加一天</button></div>';
+  var st=S.days[day].stops;
+  if(!st.length)h+='<div class="empty">這天還沒有行程<br>點下方按鈕新增</div>';
+  st.forEach(function(s,i){
+   h+='<div class="stop"><div class="time">'+esc(s.t)+'</div><div class="body"><div class="name">'+esc(s.n)+'</div>'+(s.note?'<div class="note">'+lk(s.note)+'</div>':'')+
+   '<div class="acts">'+(s.n?'<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(s.n)+'">地圖</a>':'')+'<button data-edit="'+i+'">編輯</button></div></div></div>'});
+  h+='<button class="add" id="addStop">＋ 新增景點／事項</button>';
+  if(S.days.length>1)h+='<button class="add" id="delDay" style="border-color:var(--bd);color:var(--sub);margin-top:14px">刪除這一天</button>';
+ }else if(view==='check'){
+  var done=S.checks.filter(function(c){return c.d}).length;
+  h+='<div class="sub" style="margin-bottom:10px">已完成 '+done+' / '+S.checks.length+'</div>';
+  S.checks.forEach(function(c,i){h+='<div class="row'+(c.d?' done':'')+'"><input type="checkbox" data-ck="'+i+'"'+(c.d?' checked':'')+'><span class="t">'+esc(c.t)+'</span><button class="x" data-rm="'+i+'">✕</button></div>'});
+  h+='<button class="add" id="addCk">＋ 新增項目</button>';
+ }else if(view==='money'){
+  h+=moneyView();
+ }else if(view==='calc'){
+  h+=calcView();
+ }else{
+  S.info.forEach(function(x,i){h+='<div class="info"><div class="k">'+esc(x.k)+' <button class="x" style="font-size:13px;color:var(--ac)" data-ie="'+i+'">編輯</button></div><div class="v">'+(lk(x.v)||'—')+'</div></div>'});
+  h+='<button class="add" id="addInfo">＋ 新增資訊卡</button>';
+  h+='<div class="tip">📱 加到手機桌面：iPhone 用 Safari 點分享 → 「加入主畫面」；Android 用 Chrome 點選單 → 「加到主畫面」。資料只存在這支手機的瀏覽器裡。</div>';
+ }
+ $('view').innerHTML=h;
+}
+
+function modal(title,fields,onSave,onDel){
+ var m=document.createElement('div');m.className='mask';
+ var h='<div class="sheet"><h3>'+esc(title)+'</h3>';
+ fields.forEach(function(f,i){h+='<label>'+f.l+'</label>'+(f.ta?'<textarea rows="3" id="f'+i+'">'+esc(f.v)+'</textarea>':'<input id="f'+i+'" type="'+(f.type||'text')+'" value="'+esc(f.v)+'">')});
+ h+='<div class="bar">'+(onDel?'<button class="d" id="mdel">刪除</button>':'')+'<button id="mc">取消</button><button class="p" id="ms">儲存</button></div></div>';
+ m.innerHTML=h;document.body.appendChild(m);
+ function close(){m.remove()}
+ m.addEventListener('click',function(e){if(e.target===m)close()});
+ m.querySelector('#mc').onclick=close;
+ m.querySelector('#ms').onclick=function(){onSave(fields.map(function(_,i){return m.querySelector('#f'+i).value.trim()}));save();close();render()};
+ if(onDel)m.querySelector('#mdel').onclick=function(){onDel();save();close();render()};
+ var f0=m.querySelector('#f0');if(f0&&!f0.value)f0.focus();
+}
+function stopForm(i){
+ var s=i==null?{t:'',n:'',note:''}:S.days[day].stops[i];
+ modal(i==null?'新增事項':'編輯事項',[{l:'時間',v:s.t,type:'time'},{l:'地點／事項',v:s.n},{l:'備註（訂位、票券、提醒…）',v:s.note,ta:1}],
+  function(v){if(!v[1])return;var o={t:v[0],n:v[1],note:v[2]};var a=S.days[day].stops;if(i==null)a.push(o);else a[i]=o;
+   a.sort(function(x,y){return (x.t||'99:99')<(y.t||'99:99')?-1:1})},
+  i==null?null:function(){S.days[day].stops.splice(i,1)});
+}
+function infoForm(i){
+ var x=i==null?{k:'',v:''}:S.info[i];
+ modal(i==null?'新增資訊卡':'編輯資訊卡',[{l:'標題',v:x.k},{l:'內容',v:x.v,ta:1}],
+  function(v){if(!v[0])return;if(i==null)S.info.push({k:v[0],v:v[1]});else S.info[i]={k:v[0],v:v[1]}},
+  i==null?null:function(){S.info.splice(i,1)});
+}
+
+document.addEventListener('click',function(e){
+ var t=e.target,d=t.dataset||{};
+ var er=t.closest&&t.closest('[data-ee]');if(er){expForm(+er.dataset.ee);return}
+ if(d.k!=null){press(d.k);return}
+ if(t.id==='addExp'){expForm();return}
+ if(t.id==='rateBtn'){modal('匯率設定',[{l:'1 日圓 = 幾台幣',v:S.rate,type:'number'}],function(v){var r=parseFloat(v[0]);if(r>0)S.rate=r});return}
+ if(t.closest('nav button')){view=t.closest('nav button').dataset.v;render();return}
+ if(t.id==='setBtn'){modal('旅程設定',[{l:'旅程名稱',v:S.title},{l:'出發日期',v:S.start,type:'date'}],function(v){S.title=v[0]||'家庭旅行';S.start=v[1]});return}
+ if(d.day!=null){day=+d.day;render();return}
+ if(t.id==='addDay'){S.days.push({stops:[]});day=S.days.length-1;save();render();return}
+ if(t.id==='delDay'){if(confirm('確定刪除這一天的所有行程？')){S.days.splice(day,1);save();render()}return}
+ if(t.id==='addStop'){stopForm();return}
+ if(d.edit!=null){stopForm(+d.edit);return}
+ if(t.id==='addCk'){modal('新增清單項目',[{l:'項目',v:''}],function(v){if(v[0])S.checks.push({t:v[0],d:0})});return}
+ if(d.rm!=null){S.checks.splice(+d.rm,1);save();render();return}
+ if(t.id==='addInfo'){infoForm();return}
+ if(d.ie!=null){infoForm(+d.ie);return}
+});
+document.addEventListener('change',function(e){var i=e.target.dataset&&e.target.dataset.ck;if(i!=null){S.checks[+i].d=e.target.checked?1:0;save();render()}});
+
+// home-screen icon + manifest
+try{
+ var c=document.createElement('canvas');c.width=c.height=180;var x=c.getContext('2d');
+ x.fillStyle='#d01012';x.fillRect(0,0,180,180);x.fillStyle='#f2cd37';x.fillRect(30,78,120,64);[52,90,128].forEach(function(cx){x.beginPath();x.arc(cx,70,12,0,6.3);x.fill();x.fillRect(cx-12,70,24,10)});x.fillStyle='rgba(0,0,0,.18)';x.fillRect(30,134,120,8);
+ var url=c.toDataURL('image/png');
+ var l=document.createElement('link');l.rel='apple-touch-icon';l.href=url;document.head.appendChild(l);
+ var mf={name:'家庭旅行手帳',short_name:'旅行手帳',display:'standalone',background_color:'#f6f4ef',theme_color:'#d01012',icons:[{src:url,sizes:'180x180',type:'image/png'}]};
+ var k=document.createElement('link');k.rel='manifest';k.href='data:application/manifest+json,'+encodeURIComponent(JSON.stringify(mf));document.head.appendChild(k);
+}catch(e){}
+render();
+</script>
+</body>
+</html>
